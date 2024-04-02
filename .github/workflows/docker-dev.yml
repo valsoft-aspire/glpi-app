@@ -5,12 +5,17 @@ on:
     branches: 
       - "dev"
   workflow_dispatch:
+env:
+  BUILD_ENV: ${{ github.ref == 'refs/heads/master' && 'prod' || github.ref == 'refs/heads/dev' && '}}
   
 jobs:
   docker:
     environment: ${{ github.ref == 'refs/heads/master' && 'prod' || github.ref == 'refs/heads/dev' && 'dev' }}
     runs-on: ubuntu-latest
     steps:
+      - name: Build docker image
+        run: sudo docker build -t ${{ secrets.ACR_SERVER }}/glpi:v1 . -f ./glpi/Docker
+        
       - name: Login to ACR
         uses: docker/login-action@v3
         with:
@@ -18,8 +23,11 @@ jobs:
           username: ${{ secrets.ACR_USERNAME}}
           password: ${{ secrets.ACR_PASSWORD}} 
           
-      - name: Build and push
-        uses: docker/build-push-action@v5.3.0
-        with:
-          push: true
-          tags: v1
+      - name: push to ACR
+        run: docker push ${{ secrets.ACR_SERVER }}/glpi:v1
+          
+      #- name: Build and push
+       # uses: docker/build-push-action@v5.3.0
+        #with:
+         # push: true
+          #tags: v1
