@@ -25,5 +25,8 @@ jobs:
         run: docker tag ${{secrets.ACR_SERVER}}:<image-tag> $ECR_REPOSITORY:latest
 
       - name: Push to ECR
-        run: docker push ${{secrets.ACR_SERVER}}:<image-tag>
-        push: true  # Required for pushing to private repositories
+        id: docker_build
+        uses: docker/build-push-action@v2
+        with:
+          push: true
+          tags: diouxx/glpi:latest
