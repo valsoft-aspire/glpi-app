@@ -16,13 +16,13 @@ jobs:
         with:
           aws_access_key_id: ${{ secrets.ACR_USERNAME }}
           aws_secret_access_key: ${{ secrets.ACR_PASSWORD }}
-          #region: us-east-1  # Replace with your AWS region
+          region: us-east-1  # Replace with your AWS region
 
       - name: Build Docker image
-        run: docker build -t ${{secrets.ACR_SERVER}}:<image-tag> .
+        run: docker build -t ${{secrets.ACR_SERVER}}:glpi/v1 .
 
       - name: Tag the image for ECR
-        run: docker tag ${{secrets.ACR_SERVER}}:<image-tag> $ECR_REPOSITORY:latest
+        run: docker tag ${{secrets.ACR_SERVER}}:v1 $ECR_REPOSITORY:latest
 
       - name: Push to ECR
         id: docker_build
