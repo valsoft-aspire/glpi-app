@@ -5,8 +5,8 @@ on:
     branches: 
       - "dev"
   workflow_dispatch:
-env:
-  BUILD_ENV: ${{ github.ref == 'refs/heads/master' && 'prod' || github.ref == 'refs/heads/dev' && '}}
+#env:
+ # BUILD_ENV: ${{ github.ref == 'refs/heads/master' && 'prod' || github.ref == 'refs/heads/dev' && '}}
   
 jobs:
   docker:
