@@ -35,4 +35,4 @@ jobs:
 
       # Push the Docker image to AWS ECR
       - name: Push Docker image to ECR
-        run: docker push ${{ secrets.ACR_SERVER }}/glpi:latest
+        run: docker push ${{ secrets.ACR_SERVER }}diouxx/glpi:latest
