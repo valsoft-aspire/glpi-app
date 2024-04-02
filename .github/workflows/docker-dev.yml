@@ -1,33 +1,29 @@
-name: Build & Publish Dev Docker image
+name: Push to ECR
 
 on:
   push:
-    branches: 
-      - "dev"
-  workflow_dispatch:
-#env:
- # BUILD_ENV: ${{ github.ref == 'refs/heads/master' && 'prod' || github.ref == 'refs/heads/dev' && '}}
-  
+    branches: [ dev ]  # You can adjust the branch(es) to trigger the workflow
+
 jobs:
-  docker:
-    environment: ${{ github.ref == 'refs/heads/master' && 'prod' || github.ref == 'refs/heads/dev' && 'dev' }}
+  build-and-push:
     runs-on: ubuntu-latest
     steps:
-      - name: Build docker image
-        run: sudo docker build -t ${{ secrets.ACR_SERVER }}/glpi:v1 . -f ./glpi/Docker
-        
-      - name: Login to ACR
-        uses: docker/login-action@v3
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Login to AWS ECR
+        uses: aws-actions/amazon-ecr-login@v2
         with:
-          registry: ${{ secrets.ACR_SERVER }}
-          username: ${{ secrets.ACR_USERNAME}}
-          password: ${{ secrets.ACR_PASSWORD}} 
-          
-      - name: push to ACR
-        run: docker push ${{ secrets.ACR_SERVER }}/glpi:v1
-          
-      #- name: Build and push
-       # uses: docker/build-push-action@v5.3.0
-        #with:
-         # push: true
-          #tags: v1
+          aws_access_key_id: ${{ secrets.ACR_USERNAME }}
+          aws_secret_access_key: ${{ secrets.ACR_PASSWORD }}
+          region: "us-east-1"  # Replace with your AWS region
+
+      - name: Build Docker image
+        run: docker build -t ${{secrets.ACR_SERVER}}:<image-tag> .
+
+      - name: Tag the image for ECR
+        run: docker tag ${{secrets.ACR_SERVER}}:<image-tag> $ECR_REPOSITORY:latest
+
+      - name: Push to ECR
+        run: docker push ${{secrets.ACR_SERVER}}:<image-tag>
+        push: true  # Required for pushing to private repositories
