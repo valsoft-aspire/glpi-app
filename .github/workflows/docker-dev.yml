@@ -22,6 +22,7 @@ jobs:
         uses: aws-actions/amazon-ecr-login@v2
         with:
          region: ${{ env.AWS_REGION }}
+         registry: ${{ secrets.ACR_SERVER }}
          # aws_access_key_id: ${{ secrets.ACR_USERNAME }}
           #aws_secret_access_key: ${{ secrets.ACR_PASSWORD }}
           #region: us-east-1  # Replace with your AWS region
