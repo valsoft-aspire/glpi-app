@@ -7,6 +7,8 @@ on:
 jobs:
   build-and-push:
     runs-on: ubuntu-latest
+    env:
+      AWS_REGION: us-east-1
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
@@ -16,8 +18,10 @@ jobs:
              echo "AWS_SECRET_ACCESS_KEY=${{ secrets.ACR_PASSWORD }}" >> $GITHUB_ENV
 
       - name: Login to AWS ECR
+        id: login-ecr
         uses: aws-actions/amazon-ecr-login@v2
-        #with:
+        with:
+         region: ${{ env.AWS_REGION }}
          # aws_access_key_id: ${{ secrets.ACR_USERNAME }}
           #aws_secret_access_key: ${{ secrets.ACR_PASSWORD }}
           #region: us-east-1  # Replace with your AWS region
