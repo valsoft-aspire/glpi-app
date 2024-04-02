@@ -13,11 +13,11 @@ jobs:
 
       # Pull the Docker image from Docker Hub
       - name: Pull Docker image
-        run: docker pull diouxx/glpi
+        run: docker pull diouxx/glpi:latest
 
       # Tag the Docker image with the AWS ECR repository URI
       - name: Tag Docker image
-        run: docker tag <docker-hub-image> ${{ secrets.ACR_SERVER }}:latest
+        run: docker tag diouxx/glpi:latest ${{ secrets.ACR_SERVER }}:latest
 
       # Log in to AWS ECR
       - name: Login to AWS ECR
