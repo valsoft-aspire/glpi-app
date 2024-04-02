@@ -17,7 +17,7 @@ jobs:
 
       # Tag the Docker image with the AWS ECR repository URI
       - name: Tag Docker image
-        run: docker tag diouxx/glpi ${{ secrets.ACR_SERVER }}:latest
+        run: docker tag diouxx/glpi:latest ${{ secrets.ACR_SERVER }}/glpi:latest
 
       # Log in to AWS ECR
       - name: Login to AWS ECR
@@ -25,4 +25,4 @@ jobs:
 
       # Push the Docker image to AWS ECR
       - name: Push Docker image to ECR
-        run: docker push ${{ secrets.ACR_SERVER }}:latest
+        run: docker push ${{ secrets.ACR_SERVER }}/glpi:latest
