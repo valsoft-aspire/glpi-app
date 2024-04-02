@@ -14,7 +14,10 @@ jobs:
       # Pull the Docker image from Docker Hub
       - name: Pull Docker image
         run: docker pull diouxx/glpi:latest
-
+        
+      - name: Debug ACR Server
+        run: echo "ACR Server:${{ secrets.ACR_SERVER }}"
+        
       # Tag the Docker image with the AWS ECR repository URI
       - name: Tag Docker image
         run: docker tag diouxx/glpi:latest ${{ secrets.ACR_SERVER }}/glpi:latest
