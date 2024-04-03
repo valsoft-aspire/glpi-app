@@ -8,7 +8,7 @@ env:
 jobs:
   build-and-push:
     environment: 
-      name: ${{ env.BUILD_ENV }}
+      name: ${{ BUILD_ENV }}
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
