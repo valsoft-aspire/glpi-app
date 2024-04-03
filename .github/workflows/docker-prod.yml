@@ -7,8 +7,6 @@ env:
    BUILD_ENV: ${{ github.ref == 'refs/heads/master' && 'prod' || github.ref == 'refs/heads/dev' && 'dev'}}
 jobs:
   build-and-push:
-    environment: 
-      name: ${{ BUILD_ENV }}
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
