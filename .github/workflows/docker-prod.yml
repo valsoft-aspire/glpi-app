@@ -1,0 +1,37 @@
+name: Push to ECR
+
+on:
+  push:
+    branches: [dev]  # You can adjust the branch(es) to trigger the workflow
+env:
+   BUILD_ENV: ${{ github.ref == 'refs/heads/master' && 'prod' || github.ref == 'refs/heads/dev' && 'dev'}}
+jobs:
+  build-and-push:
+    environment: ${{ github.ref == 'refs/heads/master' && 'prod' || github.ref == 'refs/heads/dev' && 'dev' }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      # Pull the Docker image from Docker Hub
+      - name: Pull Docker image
+        run: docker pull diouxx/glpi:latest
+        
+      - name: Debug ACR Server
+        run: echo "ACR Server:${{ secrets.ACR_SERVER }}"
+        
+        
+      # Log in to AWS ECR
+      - name: Login to AWS ECR
+        uses: docker/login-action@v2
+        with:
+          registry: ${{ secrets.ACR_SERVER }}
+          username: ${{ secrets.ACR_USERNAME}}
+          password: ${{ secrets.ACR_PASSWORD}} 
+    # Tag the Docker image with the AWS ECR repository URI
+      - name: Tag Docker image
+        run: docker tag diouxx/glpi:latest ${{ secrets.ACR_SERVER }}/glpi:latest
+
+      # Push the Docker image to AWS ECR
+      - name: Push Docker image to ECR
+        run: docker push ${{ secrets.ACR_SERVER }}/glpi:latest
