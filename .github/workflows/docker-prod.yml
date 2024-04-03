@@ -18,8 +18,7 @@ jobs:
         
       - name: Debug ACR Server
         run: echo "ACR Server:${{ secrets.ECR_SERVER }}"
-        
-        
+                
       # Log in to AWS ECR
       - name: Login to AWS ECR
         uses: docker/login-action@v2
