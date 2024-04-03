@@ -2,7 +2,7 @@ name: Push to ECR
 
 on:
   push:
-    branches: [dev]  # You can adjust the branch(es) to trigger the workflow
+    branches: [master]  # You can adjust the branch(es) to trigger the workflow
 env:
    BUILD_ENV: ${{ github.ref == 'refs/heads/master' && 'prod' || github.ref == 'refs/heads/dev' && 'dev'}}
 jobs:
