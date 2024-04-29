@@ -38,11 +38,6 @@ libsasl2-modules \
 libsasl2-modules-db \
 && rm -rf /var/lib/apt/lists/*
 
-# Install Composer
-RUN php -r "copy('https://getcomposer.org/installer', 'composer-setup.php');" \
-    && php composer-setup.php --install-dir=/usr/local/bin --filename=composer \
-    && php -r "unlink('composer-setup.php');"
-
 #Copie et execution du script pour l'installation et l'initialisation de GLPI
 COPY glpi-start.sh /opt/
 RUN chmod +x /opt/glpi-start.sh
